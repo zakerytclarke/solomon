@@ -1,0 +1,54 @@
+@font-face {
+  font-family:BebasNeue;
+  src: url('./assets/fonts/BebasNeue-Regular.otf')
+}
+
+body{
+  width:100vw;
+  height:100vh;
+  overflow: hidden;
+  background-color: #111111;
+  font-size:150%;
+  color:#D6DBDF;
+  font-family: 'Orbitron', sans-serif;
+}
+.page{
+  color:#0E1314;
+  margin-left: 20vw;
+  text-align:center;
+  width:60vw;
+  height:100vh;
+  border:10px #C7C3C9 solid;
+  border-radius:2.5vmin;
+  background-color:#D5D1D8;
+}
+
+
+#drop-area{
+  border:10px #777 dashed;
+  height:50vh;
+  width:50vw;
+  border-radius:2.5vmin;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  border:1px black solid;
+  color:#0E1314;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+  border:1px black solid;
+  color:#0E1314;
+}
+
+th{
+  background-color:#111;
+  color:#D6DBDF;
+  
+}
+
+tr:nth-child(even) {background-color: #ccc;}
