@@ -9,7 +9,8 @@
 
   <link href="https://fonts.googleapis.com/css?family=Varela+Round&display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="style.css">
-
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
 </head>
   <body>
     <div id="header">
@@ -28,9 +29,59 @@
     </div>
     <div id="main-page" class="page">
       <h2 style="vertical-align:middle;">Data Explorer</h2>
+      <div class="menuItem">
+        <span class="material-icons">bubble_chart</span>
+        <h3>Visualize</h3>
+      </div>
+      <div class="menuItem" onclick="changePage('models')">
+        <span class="material-icons">device_hub</span>
+        <h3>Model</h3>
+      </div>
+      <div class="menuItem">
+        <span class="material-icons">question_answer</span>
+        <h3>Query</h3>
+      </div>
+    </div>
+    <div id="models-page" class="page">
+      <h2 style="vertical-align:middle;">Select a Model</h2>
+      <div class="menuItem" onclick="()">
+        <span class="material-icons">show_chart</span>
+        <h3>Linear Regression</h3>
+      </div>
+      <div class="menuItem" onclick="()">
+        <span class="material-icons">device_hub</span>
+        <h3>Decision Tree</h3>
+      </div>
+      <div class="menuItem"  onclick="changePage('nn');trainNN();">
+        <span class="material-icons">share</span>
+        <h3>Feedforward Neural Network</h3>
+      </div>
+      <div class="menuItem" onclick="()">
+        <span class="material-icons">grain</span>
+        <h3>K-means Clustering</h3>
+      </div>
+      <div class="menuItem" onclick="()">
+        <span class="material-icons">vertical_align_center</span>
+        <h3>Support Vector Machine</h3>
+      </div>
 
+    </div>
+
+    <div id="nn-page" class="page">
+      <h2 style="vertical-align:middle;">Feedforward Neural Network</h2>
+      <p id="nn-notice-training" style="display:none;">Neural Network Training...</p>
+      <label>
+        Hidden Layers:
+        <input id="nn-hiddenLayers" placeholder="10,10,...">
+      </label><br>
+      <button onclick="trainNN();">Train Network</button>
+      <h3>Neural Network Statistics</h3>
+      <p id="nn-stats"></p?
     </div>
     <script src="https://unpkg.com/brain.js@1.1.2/browser.min.js"></script>
     <script src="./index.js"></script>
+    <script src="./chart.js"></script>
+    <script src="./query.js"></script>
+    <script src="./nn.js"></script>
   </body>
 </html>

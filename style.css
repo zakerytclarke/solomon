@@ -11,18 +11,28 @@ body{
   font-size:150%;
   color:#D6DBDF;
   font-family: 'Orbitron', sans-serif;
+  background-color:#1f2527;
+  color:#fff;
 }
 .page{
-  color:#0E1314;
+  //color:#0E1314;
   margin-left: 20vw;
   text-align:center;
   width:60vw;
   height:100vh;
-  border:10px #C7C3C9 solid;
+  //border:10px #C7C3C9 solid;
   border-radius:2.5vmin;
-  background-color:#D5D1D8;
+  /* /background-color:#D5D1D8; */
 }
 
+.menuItem{
+  width:30%;
+  display:inline-block;
+}
+
+.menuItem > span{
+  font-size:15vw;
+}
 
 #drop-area{
   border:10px #777 dashed;
@@ -34,6 +44,7 @@ body{
 table {
   border-collapse: collapse;
   width: 100%;
+  background-color:#D5D1D8;
   border:1px black solid;
   color:#0E1314;
 }
@@ -48,7 +59,7 @@ th, td {
 th{
   background-color:#111;
   color:#D6DBDF;
-  
+
 }
 
 tr:nth-child(even) {background-color: #ccc;}
