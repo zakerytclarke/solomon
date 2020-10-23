@@ -47,7 +47,7 @@ function CSVTOJSON(){
 function labelData(){
   STRUCTURE={};
   for(var key in DATA[0]){//For all fields
-    STRUCTURE[key]={type:null,numeric:0,categorical:0,empty:0,currency:0,percentage:0,stats:{mean:0,median:[],mode:{},max:-Infinity,min:Infinity}};
+    STRUCTURE[key]={type:null,numeric:0,categorical:0,empty:0,currency:0,percentage:0,stats:{mean:0,median:[],mode:{},max:-Infinity,min:Infinity},categories:new Set()};
   }
 
 
@@ -70,41 +70,47 @@ function labelData(){
         STRUCTURE[key].stats.mode[x[key]]=0;
       }
       if(tDe!="categorical"&&tDe!="empty"){
-          //Mean
-          var cN=convertToNumber(x[key]);
-          STRUCTURE[key].stats.mean+=cN;//Increase mean count, divide at end
-          //Median
-          STRUCTURE[key].stats.median.push(cN);
-          //Max & Min
-          STRUCTURE[key].stats.max=Math.max(STRUCTURE[key].stats.max,cN);
-          STRUCTURE[key].stats.min=Math.min(STRUCTURE[key].stats.min,cN);
+        //Mean
+        var cN=convertToNumber(x[key]);
+        STRUCTURE[key].stats.mean+=cN;//Increase mean count, divide at end
+        //Median
+        STRUCTURE[key].stats.median.push(cN);
+        //Max & Min
+        STRUCTURE[key].stats.max=Math.max(STRUCTURE[key].stats.max,cN);
+        STRUCTURE[key].stats.min=Math.min(STRUCTURE[key].stats.min,cN);
 
+      }else{
+        STRUCTURE[key].categories.add(x[key]);
       }
     }
   })
 
+
+
   //Calculate Median and Mean
   for(var key in STRUCTURE){
-      //Mean
-      STRUCTURE[key].stats.mean=STRUCTURE[key].stats.mean/DATA.length;
-      //Median
-      STRUCTURE[key].stats.median=STRUCTURE[key].stats.median[Math.floor(STRUCTURE[key].stats.median.length/2)];
-      //mode
-      var max=0;
-      var mode="";
-      for(var key1 in STRUCTURE[key].stats.mode){
-        var c=STRUCTURE[key].stats.mode[key1];
-        if(c>max){
-          max=c;
-          mode=key1;
-        }
+    //Categorical
+    STRUCTURE[key].categories=Array.from(STRUCTURE[key].categories);
+    //Mean
+    STRUCTURE[key].stats.mean=STRUCTURE[key].stats.mean/DATA.length;
+    //Median
+    STRUCTURE[key].stats.median=STRUCTURE[key].stats.median[Math.floor(STRUCTURE[key].stats.median.length/2)];
+    //mode
+    var max=0;
+    var mode="";
+    for(var key1 in STRUCTURE[key].stats.mode){
+      var c=STRUCTURE[key].stats.mode[key1];
+      if(c>max){
+        max=c;
+        mode=key1;
       }
-      STRUCTURE[key].stats.mode=mode;
-      //Convert to a number if possible
-      var tDe=typeOfData(mode);
-      if(tDe!="categorical"&&tDe!="empty"){
-          STRUCTURE[key].stats.mode=convertToNumber(mode);
-      }
+    }
+    STRUCTURE[key].stats.mode=mode;
+    //Convert to a number if possible
+    var tDe=typeOfData(mode);
+    if(tDe!="categorical"&&tDe!="empty"){
+      STRUCTURE[key].stats.mode=convertToNumber(mode);
+    }
   }
 
 }
@@ -114,12 +120,12 @@ function autoSanitize(){
   document.getElementById("page1").style.display="none";
   document.getElementById("page2").style.display="block";
   document.getElementById("fixDataTable").innerHTML=`
-    <tr>
-      <th>Feature</th>
-      <th>Type of Data</th>
-      <th>Error Handling</th>
-      <th>Usage</th>
-    </tr>
+  <tr>
+  <th>Feature</th>
+  <th>Type of Data</th>
+  <th>Error Handling</th>
+  <th>Usage</th>
+  </tr>
   `;
   for(var key in STRUCTURE){
     var td=STRUCTURE[key];
@@ -138,39 +144,39 @@ function autoSanitize(){
     }
 
     document.getElementById("fixDataTable").innerHTML+=`
-      <tr id="fixDataTable-${key}">
-        <td><b>${key}</b></td>
-        <td id="fixDataTable-${key}-type">
-          <select required>
-            <option disabled selected value></option>
-            <option value="categorical">Categorical</option>
-            <option value="numeric">Numeric</option>
-            <option value="percentage">Percentage(%)</option>
-            <option value="currency">Currency($)</option>
-            <option disabled value="empty">Empty</option>
-          </select>
-        </td>
-        <td id="fixDataTable-${key}-errorHandling">
-          <select required>
-            <option value="remove" selected>Remove</option>
-            <option value="mean">Mean</option>
-            <option value="median">Median</option>
-            <option value="mode">Mode</option>
-            <option value="min">Minimum</option>
-            <option value="max">Maximum</option>
-            <option value="random">Random</option>
-            <option value="0">Zero</option>
-            <option value="null">Null</option>
-          </select>
-        </td>
-        <td id="fixDataTable-${key}-usage">
-        <select required>
-          <option value="input">Input</option>
-          <option value="output">Output</option>
-          <option value="delete" selected>Delete</option>
-        </select>
-        </td>
-      </tr>
+    <tr id="fixDataTable-${key}">
+    <td><b>${key}</b></td>
+    <td id="fixDataTable-${key}-type">
+    <select required>
+    <option disabled selected value></option>
+    <option value="categorical">Categorical</option>
+    <option value="numeric">Numeric</option>
+    <option value="percentage">Percentage(%)</option>
+    <option value="currency">Currency($)</option>
+    <option disabled value="empty">Empty</option>
+    </select>
+    </td>
+    <td id="fixDataTable-${key}-errorHandling">
+    <select required>
+    <option value="remove" selected>Remove</option>
+    <option value="mean">Mean</option>
+    <option value="median">Median</option>
+    <option value="mode">Mode</option>
+    <option value="min">Minimum</option>
+    <option value="max">Maximum</option>
+    <option value="random">Random</option>
+    <option value="0">Zero</option>
+    <option value="null">Null</option>
+    </select>
+    </td>
+    <td id="fixDataTable-${key}-usage">
+    <select required>
+    <option value="input">Input</option>
+    <option value="output">Output</option>
+    <option value="delete" selected>Delete</option>
+    </select>
+    </td>
+    </tr>
     `;
 
   }
@@ -206,8 +212,8 @@ function autoSanitize(){
 }
 
 /**
- * Remove errors and prepare data for processing
- */
+* Remove errors and prepare data for processing
+*/
 function cleanData(){
   //Load Schema from table
   for(var key in STRUCTURE){
@@ -239,10 +245,76 @@ function cleanData(){
 
   //Fix Errors
   for(var i=0;i<DATA.length;i++){
+    if(DATA[i]){
+      for(var key in STRUCTURE){
+        if(STRUCTURE[key].usage=="delete"){
+          if(!DATA[i]){
+            break;
+          }
+
+          delete DATA[i][key];//Remove column
+
+        }else{
+          //Check if type is incorrect
+          if(DATA[i]&&typeOfData(DATA[i][key])!=STRUCTURE[key].type){
+            //Use Error Handling Strategy
+            switch(STRUCTURE[key].error){
+              case "remove":
+              DATA[i]=null;
+              break;
+              case "mean":
+              DATA[i][key]=STRUCTURE[key].stats.mean;
+              break;
+              case "median":
+              DATA[i][key]=STRUCTURE[key].stats.median;
+              break;
+              case "mode":
+              DATA[i][key]=STRUCTURE[key].stats.mode;
+              break;
+              case "min":
+              DATA[i][key]=STRUCTURE[key].stats.min;
+              break;
+              case "max":
+              DATA[i][key]=STRUCTURE[key].stats.max;
+              break;
+              case "random":
+              var max=STRUCTURE[key].stats.max;
+              var min=STRUCTURE[key].stats.min;
+              DATA[i][key]=(Math.random()*(max-min))+min;
+              break;
+              case "zero":
+              DATA[i][key]=0;
+              break;
+              case "null":
+              DATA[i][key]=null;
+              break;
+            }
+
+          }else if(DATA[i]){
+            //Type is correct, coerce
+            switch(STRUCTURE[key].type){
+              case "numeric":
+              DATA[i][key]=Number(DATA[i][key])
+              break;
+              case "currency":
+              DATA[i][key]=Number(DATA[i][key].substring(1))
+              break;
+              case "percentage":
+              DATA[i][key]=Number(DATA[i][key].replace("%",""));
+              break;
+            }
+          }
+        }
+
+
+      }
+    }
 
   }
-
-
+  //Remove null
+  DATA=DATA.filter(x=>x!=null);
+  console.log(DATA);
+  changePage("home");
 }
 
 
@@ -284,84 +356,113 @@ function convertToNumber(x){
 
 
 function CSVToArray( strData, strDelimiter ){
-        // Check to see if the delimiter is defined. If not,
-        // then default to comma.
-        strDelimiter = (strDelimiter || ",");
+  // Check to see if the delimiter is defined. If not,
+  // then default to comma.
+  strDelimiter = (strDelimiter || ",");
 
-        // Create a regular expression to parse the CSV values.
-        var objPattern = new RegExp(
-            (
-                // Delimiters.
-                "(\\" + strDelimiter + "|\\r?\\n|\\r|^)" +
+  // Create a regular expression to parse the CSV values.
+  var objPattern = new RegExp(
+    (
+      // Delimiters.
+      "(\\" + strDelimiter + "|\\r?\\n|\\r|^)" +
 
-                // Quoted fields.
-                "(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|" +
+      // Quoted fields.
+      "(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|" +
 
-                // Standard fields.
-                "([^\"\\" + strDelimiter + "\\r\\n]*))"
-            ),
-            "gi"
-            );
-
-
-        // Create an array to hold our data. Give the array
-        // a default empty first row.
-        var arrData = [[]];
-
-        // Create an array to hold our individual pattern
-        // matching groups.
-        var arrMatches = null;
+      // Standard fields.
+      "([^\"\\" + strDelimiter + "\\r\\n]*))"
+    ),
+    "gi"
+  );
 
 
-        // Keep looping over the regular expression matches
-        // until we can no longer find a match.
-        while (arrMatches = objPattern.exec( strData )){
+  // Create an array to hold our data. Give the array
+  // a default empty first row.
+  var arrData = [[]];
 
-            // Get the delimiter that was found.
-            var strMatchedDelimiter = arrMatches[ 1 ];
-
-            // Check to see if the given delimiter has a length
-            // (is not the start of string) and if it matches
-            // field delimiter. If id does not, then we know
-            // that this delimiter is a row delimiter.
-            if (
-                strMatchedDelimiter.length &&
-                strMatchedDelimiter !== strDelimiter
-                ){
-
-                // Since we have reached a new row of data,
-                // add an empty row to our data array.
-                arrData.push( [] );
-
-            }
-
-            var strMatchedValue;
-
-            // Now that we have our delimiter out of the way,
-            // let's check to see which kind of value we
-            // captured (quoted or unquoted).
-            if (arrMatches[ 2 ]){
-
-                // We found a quoted value. When we capture
-                // this value, unescape any double quotes.
-                strMatchedValue = arrMatches[ 2 ].replace(
-                    new RegExp( "\"\"", "g" ),
-                    "\""
-                    );
-
-            } else {
-
-                // We found a non-quoted value.
-                strMatchedValue = arrMatches[ 3 ];
-
-            }
+  // Create an array to hold our individual pattern
+  // matching groups.
+  var arrMatches = null;
 
 
-            // Now that we have our value string, let's add
-            // it to the data array.
-            arrData[ arrData.length - 1 ].push( strMatchedValue );
-        }
+  // Keep looping over the regular expression matches
+  // until we can no longer find a match.
+  while (arrMatches = objPattern.exec( strData )){
 
-        // Return the parsed data.
-        return( arrData );
+    // Get the delimiter that was found.
+    var strMatchedDelimiter = arrMatches[ 1 ];
+
+    // Check to see if the given delimiter has a length
+    // (is not the start of string) and if it matches
+    // field delimiter. If id does not, then we know
+    // that this delimiter is a row delimiter.
+    if (
+      strMatchedDelimiter.length &&
+      strMatchedDelimiter !== strDelimiter
+    ){
+
+      // Since we have reached a new row of data,
+      // add an empty row to our data array.
+      arrData.push( [] );
+
     }
+
+    var strMatchedValue;
+
+    // Now that we have our delimiter out of the way,
+    // let's check to see which kind of value we
+    // captured (quoted or unquoted).
+    if (arrMatches[ 2 ]){
+
+      // We found a quoted value. When we capture
+      // this value, unescape any double quotes.
+      strMatchedValue = arrMatches[ 2 ].replace(
+        new RegExp( "\"\"", "g" ),
+        "\""
+      );
+
+    } else {
+
+      // We found a non-quoted value.
+      strMatchedValue = arrMatches[ 3 ];
+
+    }
+
+
+    // Now that we have our value string, let's add
+    // it to the data array.
+    arrData[ arrData.length - 1 ].push( strMatchedValue );
+  }
+
+  // Return the parsed data.
+  return( arrData );
+}
+
+
+
+
+
+
+
+
+
+
+
+
+function changePage(page){
+  var pages=document.getElementsByClassName("page");
+  for(var i=0;i<pages.length;i++){
+    pages[i].style.display="none";
+  }
+  switch(page){
+    case "home":
+    document.getElementById("main-page").style.display="block";
+    break;
+    case "models":
+    document.getElementById("models-page").style.display="block";
+    break;
+    case "nn":
+    document.getElementById("nn-page").style.display="block";
+    break;
+  }
+}
