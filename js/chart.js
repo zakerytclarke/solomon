@@ -10,7 +10,7 @@ function renderCharts(){
     })
   }
   console.log(MAPPED_DATA)
-
+  Charts.clear();
   for(var key in STRUCTURE){//Inputs
     for(var key2 in STRUCTURE){//Outputs
       if(STRUCTURE[key].usage=="input"){
