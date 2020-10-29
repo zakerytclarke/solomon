@@ -1,4 +1,5 @@
 function generateInputForms(){
+    document.getElementById("query-inputs").innerHTML="";
   for(var key in STRUCTURE){
     if(STRUCTURE[key].usage=="input"){
       if(STRUCTURE[key].type=="categorical"){
@@ -14,8 +15,8 @@ function generateInputForms(){
       }else{
         document.getElementById("query-inputs").innerHTML+=`
         <label>${key}:
-        <input id="query-${key}" class="query-input" type="range" min="${STRUCTURE[key].stats.min}" max="${STRUCTURE[key].stats.max}" step="0.01" value="${(STRUCTURE[key].stats.max-STRUCTURE[key].stats.min)/2+STRUCTURE[key].stats.min}" onchange="document.getElementById('query-${key}-value').value=this.value;">
-        <input id="query-${key}-value" value="${(STRUCTURE[key].stats.max-STRUCTURE[key].stats.min)/2+STRUCTURE[key].stats.min}" onchange="document.getElementById('query-${key}').value=this.value;">
+        <input id="query-${key}-value" type="range" min="${STRUCTURE[key].stats.min}" max="${STRUCTURE[key].stats.max}" step="0.01" value="${(STRUCTURE[key].stats.max-STRUCTURE[key].stats.min)/2+STRUCTURE[key].stats.min}" onchange="document.getElementById('query-${key}').value=this.value;">
+        <input type="number" id="query-${key}" class="query-input" value="${(STRUCTURE[key].stats.max-STRUCTURE[key].stats.min)/2+STRUCTURE[key].stats.min}" onchange="document.getElementById('query-${key}-value').value=this.value;">
         </label><br>
         `;
 
@@ -31,9 +32,10 @@ function queryModels(){
   var inputs=document.getElementsByClassName("query-input");
   var inp={};
   for(var i=0;i<inputs.length;i++){
+    console.log(inputs[i]);
     var k=inputs[i].id.replace("query-","");
     inp[k]=inputs[i].value;
-    if(inputs[i].type=="range"){
+    if(inputs[i].type=="number"){
       inp[k]=Number(inputs[i].value);
     }
   }

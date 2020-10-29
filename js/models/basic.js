@@ -132,6 +132,12 @@ function trainNearestNeighbor(d1){
   }
 }
 
+function trainLinearRegression(){
+  var model={};
+  for(var i=0;i<DATA.length;i++){
+
+  }
+}
 
 
 

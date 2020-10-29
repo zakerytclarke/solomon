@@ -24,20 +24,12 @@ function uploadFile(file){
   console.log(file);
   var fr=new FileReader();
   FILENAME=file[0].name.replace(".csv","").replace(".json","").replace(".solomon","");
-  if(file[0].name.indexOf(".solomon")!=-1){//CSV
+  if(file[0].name.indexOf(".solomon")!=-1){//SOLOMON
     fr.onload=function(){
-      var ld=JSON.parse(fr.result);
-      console.log(ld);
-      console.log
-      DATA=ld.DATA;
-      STRUCTURE=ld.STRUCTURE;
-      MODELS=ld.MODELS;
-      for(var key in MODELS.query){
-        //Extract function from string
-        eval("var tempFunc="+MODELS.query[key]);
-        MODELS.query[key]=tempFunc;
-      }
+      loadSolomon(fr.result);
 
+      autoSanitize();
+      changePage('home');
 
     }
   }else
