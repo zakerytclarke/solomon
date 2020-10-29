@@ -1,5 +1,18 @@
+var FILENAME;
+var ORIGINAL_DATA;
 var DATA;
 var STRUCTURE;
+var META={};
+
+var PAGE;
+
+changePage('import');
+
+var MODELS={
+  query:{},
+  model:{},
+  error:{}
+};
 
 var OPTIONS={
   missingData:{
@@ -10,6 +23,24 @@ var OPTIONS={
 function uploadFile(file){
   console.log(file);
   var fr=new FileReader();
+  FILENAME=file[0].name.replace(".csv","").replace(".json","").replace(".solomon","");
+  if(file[0].name.indexOf(".solomon")!=-1){//CSV
+    fr.onload=function(){
+      var ld=JSON.parse(fr.result);
+      console.log(ld);
+      console.log
+      DATA=ld.DATA;
+      STRUCTURE=ld.STRUCTURE;
+      MODELS=ld.MODELS;
+      for(var key in MODELS.query){
+        //Extract function from string
+        eval("var tempFunc="+MODELS.query[key]);
+        MODELS.query[key]=tempFunc;
+      }
+
+
+    }
+  }else
   if(file[0].name.indexOf(".csv")!=-1){//CSV
     fr.onload=function(){
       DATA=CSVToArray(fr.result);
@@ -21,6 +52,7 @@ function uploadFile(file){
   }else{//JSON
     fr.onload=function(){
       DATA=JSON.parse(fr.result);
+
       labelData();
       autoSanitize();
     }
@@ -440,12 +472,35 @@ function CSVToArray( strData, strDelimiter ){
 
 
 
+function exportModel(){
+    var out={};
+    out.STRUCTURE=STRUCTURE;
+    out.DATA=DATA;
+    out.MODELS=MODELS;
+    for(var key in out.MODELS.query){
+        out.MODELS.query[key]=out.MODELS.query[key].toString();
+    }
+
+    out.FILENAME=FILENAME;
+
+    var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(out));
+    var dlAnchorElem = document.getElementById('downloadAnchorElem');
+    dlAnchorElem.setAttribute("href",dataStr);
+    dlAnchorElem.setAttribute("download",FILENAME+".solomon");
+    dlAnchorElem.click();
+}
+
+
+function trainModels(){
+  initModels();
+  trainBasic();
+  trainNN();
+}
 
 
 
 
-
-
+var first=true;
 
 
 
@@ -455,8 +510,19 @@ function changePage(page){
     pages[i].style.display="none";
   }
   switch(page){
+    case "import":
+    document.getElementById("page1").style.display="block";
+    break;
     case "home":
-    document.getElementById("main-page").style.display="block";
+      document.getElementById("main-page").style.display="block";
+      if(first){
+        trainModels();
+        first=false;
+      }
+    break;
+    case "query":
+    document.getElementById("query-page").style.display="block";
+    generateInputForms();
     break;
     case "models":
     document.getElementById("models-page").style.display="block";
@@ -464,5 +530,9 @@ function changePage(page){
     case "nn":
     document.getElementById("nn-page").style.display="block";
     break;
+    case "charts":
+    document.getElementById("charts-page").style.display="block";
+    break;
   }
+  PAGE=page;
 }
