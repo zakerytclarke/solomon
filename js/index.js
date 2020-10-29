@@ -501,6 +501,8 @@ function changePage(page){
   for(var i=0;i<pages.length;i++){
     pages[i].style.display="none";
   }
+
+  document.getElementById("menu").style.display="inline-block";
   switch(page){
     case "import":
     document.getElementById("page1").style.display="block";
@@ -524,6 +526,9 @@ function changePage(page){
     break;
     case "charts":
     document.getElementById("charts-page").style.display="block";
+    break;
+    default:
+      document.getElementById("menu").style.display="none";
     break;
   }
   PAGE=page;

@@ -18,7 +18,7 @@
       <div style="width:47%;display:inline-block;">
         <h1 onclick="changePage('home')">Solomon</h1>
       </div>
-      <div style="width:47%;display:inline-block;text-align:right;">
+      <div id="menu" style="width:47%;display:inline-block;text-align:right;">
         <h3 onclick="changePage('home')">Home</h3>
         <h3  onclick="changePage('import')">Import</h3>
         <h3 onclick="exportModel()">Export</h3>
@@ -40,22 +40,22 @@
           <img src="./assets/iris-dataset-image.jpg">
           <h3>Iris Dataset</h3>
         </div>
-        <div class="sampleDatasetItem" onclick="">
+        <div class="sampleDatasetItem" onclick="loadFromURL('./datasets/solomon/auto-sales.solomon')">
           <img src="./assets/auto-dataset-image.jpg">
           <h3>Auto Dataset</h3>
         </div>
-        <div class="sampleDatasetItem" onclick="">
+        <div class="sampleDatasetItem" onclick="loadFromURL('./datasets/solomon/winequality-red.solomon')">
           <img src="./assets/wine-dataset-image.jpg">
           <h3>Wine Dataset</h3>
-        </div><div class="sampleDatasetItem" onclick="">
+        </div><div class="sampleDatasetItem" onclick="loadFromURL('./datasets/solomon/Mall_Customers.solomon')">
           <img src="./assets/mall-dataset-image.jpg">
           <h3>Mall Dataset</h3>
         </div>
-        <div class="sampleDatasetItem" onclick="">
+        <div class="sampleDatasetItem" onclick="loadFromURL('./datasets/solomon/titanic.solomon')">
           <img src="./assets/titanic-dataset-image.jpg">
           <h3>Titanic</h3>
         </div>
-        <div class="sampleDatasetItem" onclick="">
+        <div class="sampleDatasetItem" onclick="loadFromURL('./datasets/solomon/height-and-weight.solomon')">
           <img src="./assets/height-and-weight-dataset-image.jpg">
           <h3>Measurements</h3>
         </div>
