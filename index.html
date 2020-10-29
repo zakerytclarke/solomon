@@ -31,6 +31,36 @@
         <input type="file" id="fileElem" accept=".csv,.json,.solomon" onchange="uploadFile(this.files)">
 
       </div>
+      <div style="width100vw;position:absoluite;left:0px;">
+        <p>-or-</p>
+        <h2>Use a sample dataset below</h2>
+      </div>
+      <div id="sampleDatsets">
+        <div class="sampleDatasetItem" onclick="loadFromURL('./datasets/solomon/Iris.solomon')">
+          <img src="./assets/iris-dataset-image.jpg">
+          <h3>Iris Dataset</h3>
+        </div>
+        <div class="sampleDatasetItem" onclick="">
+          <img src="./assets/auto-dataset-image.jpg">
+          <h3>Auto Dataset</h3>
+        </div>
+        <div class="sampleDatasetItem" onclick="">
+          <img src="./assets/wine-dataset-image.jpg">
+          <h3>Wine Dataset</h3>
+        </div><div class="sampleDatasetItem" onclick="">
+          <img src="./assets/mall-dataset-image.jpg">
+          <h3>Mall Dataset</h3>
+        </div>
+        <div class="sampleDatasetItem" onclick="">
+          <img src="./assets/titanic-dataset-image.jpg">
+          <h3>Titanic</h3>
+        </div>
+        <div class="sampleDatasetItem" onclick="">
+          <img src="./assets/height-and-weight-dataset-image.jpg">
+          <h3>Measurements</h3>
+        </div>
+      </div>
+
     </div>
     <div id="page2" class="page">
       <h2 style="vertical-align:middle;">Fix Missing Data <span style="margin-left:100px;font-size:50%;cursor:pointer;" onclick="cleanData();"><u>Next -></u></span></h2>
@@ -109,6 +139,7 @@
     <script src="https://unpkg.com/brain.js@1.1.2/browser.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
     <script src="./js/index.js"></script>
+    <script src="./js/datasets.js"></script>
     <script src="./js/chart.js"></script>
     <script src="./js/query.js"></script>
     <script src="./js/models/basic.js"></script>

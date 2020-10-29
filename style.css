@@ -45,15 +45,47 @@ body{
   font-size:15vw;
 }
 
+#sampleDatsets{
+  position:absolute;
+  left:0px;
+  width:100vw;
+  text-align: center;
+  color:#1f2527;
+}
+
+.sampleDatasetItem{
+  width:12%;
+  margin-left:0.5vw;
+  margin-right:0.5vw;
+  display:inline-block;
+  background-color: #D6DBDF;
+  padding:10px;
+  border-radius: 1vmin;
+  border: 5px #777 solid;
+  height:20vh;
+  vertical-align:middle;
+  cursor:pointer;
+}
+
+.sampleDatasetItem:hover{
+  background-color:#fff;
+}
+
+.sampleDatasetItem > img{
+  width:80%;
+  border-radius: 2vmin;
+}
+
 .chartBox{
   margin-bottom:10vh;
 }
 
 #drop-area{
   border:10px #777 dashed;
-  height:50vh;
+  height:35vh;
   width:50vw;
   border-radius:2.5vmin;
+  margin-left:5vw;
 }
 
 table {
