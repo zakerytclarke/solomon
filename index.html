@@ -11,15 +11,24 @@
   <link rel="stylesheet" type="text/css" href="style.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
   <body>
     <div id="header">
-      <h1>Solomon</h1>
+      <div style="width:47%;display:inline-block;">
+        <h1 onclick="changePage('home')">Solomon</h1>
+      </div>
+      <div style="width:47%;display:inline-block;text-align:right;">
+        <h3 onclick="changePage('home')">Home</h3>
+        <h3  onclick="changePage('import')">Import</h3>
+        <h3 onclick="exportModel()">Export</h3>
+        <h3>About</h3>
+      </div>
     </div>
-    <div id="page1" class="page">
+    <div id="page1" class="page" style="display:block;">
       <div id="drop-area">
-        <p>Drag a .csv or .json file here to start analyzing your data</p>
-        <input type="file" id="fileElem" accept=".csv,.json" onchange="uploadFile(this.files)">
+        <p>Drag a .csv, .json or .solomon file here to start analyzing your data</p>
+        <input type="file" id="fileElem" accept=".csv,.json,.solomon" onchange="uploadFile(this.files)">
 
       </div>
     </div>
@@ -29,18 +38,19 @@
     </div>
     <div id="main-page" class="page">
       <h2 style="vertical-align:middle;">Data Explorer</h2>
-      <div class="menuItem">
+      <div class="menuItem" onclick="changePage('charts');renderCharts();">
         <span class="material-icons">bubble_chart</span>
         <h3>Visualize</h3>
       </div>
-      <div class="menuItem" onclick="changePage('models')">
-        <span class="material-icons">device_hub</span>
-        <h3>Model</h3>
-      </div>
-      <div class="menuItem">
+      <div class="menuItem" onclick="changePage('query');">
         <span class="material-icons">question_answer</span>
         <h3>Query</h3>
       </div>
+      <div class="menuItem" onclick="changePage('models')">
+        <span class="material-icons">device_hub</span>
+        <h3>Tweak Models</h3>
+      </div>
+
     </div>
     <div id="models-page" class="page">
       <h2 style="vertical-align:middle;">Select a Model</h2>
@@ -52,7 +62,7 @@
         <span class="material-icons">device_hub</span>
         <h3>Decision Tree</h3>
       </div>
-      <div class="menuItem"  onclick="changePage('nn');trainNN();">
+      <div class="menuItem"  onclick="changePage('nn');">
         <span class="material-icons">share</span>
         <h3>Feedforward Neural Network</h3>
       </div>
@@ -67,6 +77,19 @@
 
     </div>
 
+    <div id="query-page" class="page">
+      <h2 style="vertical-align:middle;">Query Model</h2>
+      <div id="query-inputs"></div>
+      <button onclick="queryModels()">Run Query</button>
+      <table id="queryResults"></table>
+    </div>
+
+
+    <div id="charts-page" class="page">
+      <h2 style="vertical-align:middle;">Data Visualization</h2>
+      <div id="charts"></div>
+    </div>
+
     <div id="nn-page" class="page">
       <h2 style="vertical-align:middle;">Feedforward Neural Network</h2>
       <p id="nn-notice-training" style="display:none;">Neural Network Training...</p>
@@ -78,10 +101,17 @@
       <h3>Neural Network Statistics</h3>
       <p id="nn-stats"></p?
     </div>
+
+    <a style="dispaly:none;" id="downloadAnchorElem"></a>
+
+
+
     <script src="https://unpkg.com/brain.js@1.1.2/browser.min.js"></script>
-    <script src="./index.js"></script>
-    <script src="./chart.js"></script>
-    <script src="./query.js"></script>
-    <script src="./nn.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+    <script src="./js/index.js"></script>
+    <script src="./js/chart.js"></script>
+    <script src="./js/query.js"></script>
+    <script src="./js/models/basic.js"></script>
+    <script src="./js/models/nn.js"></script>
   </body>
 </html>

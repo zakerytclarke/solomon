@@ -36,24 +36,10 @@ function trainNN(){
   // create a simple feed forward neural network with backpropagation
   net = new brain.NeuralNetwork(NN_CONFIG);
 
-  var trainingData=[];
-  var testingData=[];
 
-  //Generate testing and training dataset
-  var trainingRatio=0.7;
-  var nData=shuffle(DATA.slice());//copy data
-  for(var i=0;i<nData.length;i++){
-    if((trainingRatio*nData.length)<i){
-      trainingData.push(nData[i]);
-    }else{
-      testingData.push(nData[i]);
-    }
-  }
 
-  var trainingData=trainingData.map(x=>encodeData(x));
+  var trainingData=TRAINING_DATA.map(x=>encodeData(x));
 
-  console.log(trainingData.length);
-  console.log(testingData.length);
 
 
   SCHEMA.input=Array.from(SCHEMA.input);
@@ -61,9 +47,13 @@ function trainNN(){
   console.log(SCHEMA)
   net.train(trainingData);
   FF.train=false;
-  testNetwork(testingData);
+  testNetwork(TESTING_DATA);
 
   document.getElementById("nn-notice-training").style.display="none";
+
+  MODELS.model.feedforwardnetwork=net;
+  MODELS.query.feedforwardnetwork=runQueryOnNetwork;
+
 }
 
 function runQueryOnNetwork(input){
@@ -134,29 +124,19 @@ function testNetwork(testData){
 
   //Calculate Errors
   for(var key in RESULTS){
-    RESULTS[key].accuracy=(RESULTS[key].correct/RESULTS[key].total);
     if(STRUCTURE[key].type!="categorical"){//Numeric
       RESULTS[key].averageError=RESULTS[key].errors.reduce((a, b) => a + b, 0)/RESULTS[key].errors.length;
       RESULTS[key].percentError=RESULTS[key].percentErrors.reduce((a, b) => a + b, 0)/RESULTS[key].percentErrors.length;
-
+    }else{
+      RESULTS[key].accuracy=(RESULTS[key].correct/RESULTS[key].total);
     }
   }
 
-  //Display Results
-  document.getElementById("nn-stats").innerHTML="";
-  for(var key in RESULTS){
-    var tData=RESULTS[key].averageError||"";
-    if(tData!=""){
-      tData=tData.toFixed(2);
-    }
-    var tData2=RESULTS[key].percentError||"";
-    if(tData2!=""){
-      tData2=(tData2*100).toFixed(2);
-    }
-    document.getElementById("nn-stats").innerHTML+=(`${key}:  ${(RESULTS[key].accuracy*100).toFixed(2)}%  Average Error: ${tData} Percent Error: ${tData2}%<br>`);
-  }
-  console.log(RESULTS);
+
   document.getElementById("nn-hiddenLayers").value=net.hiddenLayers+"";
+
+  MODELS.error.feedforwardnetwork=RESULTS;
+
   return RESULTS;
 }
 
@@ -227,16 +207,4 @@ function decodeData(data){
 
   }
   return output;
-}
-
-
-function shuffle(a) {
-  var j, x, i;
-  for (i = a.length - 1; i > 0; i--) {
-    j = Math.floor(Math.random() * (i + 1));
-    x = a[i];
-    a[i] = a[j];
-    a[j] = x;
-  }
-  return a;
 }

@@ -6,16 +6,17 @@
 body{
   width:100vw;
   height:100vh;
-  overflow: hidden;
   background-color: #111111;
   font-size:150%;
   color:#D6DBDF;
   font-family: 'Orbitron', sans-serif;
   background-color:#1f2527;
   color:#fff;
+  overflow-x:hidden;
 }
 .page{
   //color:#0E1314;
+  display: none;
   margin-left: 20vw;
   text-align:center;
   width:60vw;
@@ -25,6 +26,16 @@ body{
   /* /background-color:#D5D1D8; */
 }
 
+#header h1{
+  display:inline-block;
+}
+
+
+#header h3{
+  display:inline-block;
+  margin-left:2vw;
+}
+
 .menuItem{
   width:30%;
   display:inline-block;
@@ -32,6 +43,10 @@ body{
 
 .menuItem > span{
   font-size:15vw;
+}
+
+.chartBox{
+  margin-bottom:10vh;
 }
 
 #drop-area{
@@ -63,3 +78,8 @@ th{
 }
 
 tr:nth-child(even) {background-color: #ccc;}
+
+
+#charts div{
+  margin-bottom:10vh;
+}
