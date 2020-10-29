@@ -26,7 +26,7 @@ function uploadFile(file){
   FILENAME=file[0].name.replace(".csv","").replace(".json","").replace(".solomon","");
   if(file[0].name.indexOf(".solomon")!=-1){//SOLOMON
     fr.onload=function(){
-      loadSolomon(fr.result);
+      loadSolomon(JSON.parse(fr.result));
 
       autoSanitize();
       changePage('home');

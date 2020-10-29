@@ -8,8 +8,8 @@ function loadFromURL(url){
   });
 }
 
-function loadSolomon(data){
-  var ld=JSON.parse(data);
+function loadSolomon(ld){
+
   //Load data into program
   DATA=ld.DATA;
   STRUCTURE=ld.STRUCTURE;
