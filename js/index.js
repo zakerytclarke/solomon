@@ -20,6 +20,11 @@ var OPTIONS={
   }
 };
 
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.replace(new RegExp(search, 'g'), replacement);
+};
+
 function uploadFile(file){
   console.log(file);
   var fr=new FileReader();
@@ -338,7 +343,7 @@ function cleanData(){
   //Remove null
   DATA=DATA.filter(x=>x!=null);
   console.log(DATA);
-  changePage("home");
+  trainModels();
 }
 
 
@@ -464,29 +469,18 @@ function CSVToArray( strData, strDelimiter ){
 
 
 
-function exportModel(){
-    var out={};
-    out.STRUCTURE=STRUCTURE;
-    out.DATA=DATA;
-    out.MODELS=MODELS;
-    for(var key in out.MODELS.query){
-        out.MODELS.query[key]=out.MODELS.query[key].toString();
-    }
 
-    out.FILENAME=FILENAME;
-
-    var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(out));
-    var dlAnchorElem = document.getElementById('downloadAnchorElem');
-    dlAnchorElem.setAttribute("href",dataStr);
-    dlAnchorElem.setAttribute("download",FILENAME+".solomon");
-    dlAnchorElem.click();
-}
 
 
 function trainModels(){
+  document.getElementById("loadingNext").style.display="none";
+  changePage("loading");
+  var startTime=(new Date());
   initModels();
   trainBasic();
   trainNN();
+  var elapsed=(new Date())-startTime;
+  document.getElementById("loadingNext").style.display="block";
 }
 
 
@@ -502,33 +496,41 @@ function changePage(page){
     pages[i].style.display="none";
   }
 
-  document.getElementById("menu").style.display="inline-block";
+  document.getElementById("menu").style.display="none";
   switch(page){
     case "import":
     document.getElementById("page1").style.display="block";
     break;
     case "home":
-      document.getElementById("main-page").style.display="block";
-      if(first){
-        trainModels();
-        first=false;
-      }
+    document.getElementById("main-page").style.display="block";
+    document.getElementById("menu").style.display="inline-block";
     break;
     case "query":
     document.getElementById("query-page").style.display="block";
+    document.getElementById("menu").style.display="inline-block";
     generateInputForms();
     break;
     case "models":
     document.getElementById("models-page").style.display="block";
+    document.getElementById("menu").style.display="inline-block";
     break;
     case "nn":
     document.getElementById("nn-page").style.display="block";
     break;
     case "charts":
     document.getElementById("charts-page").style.display="block";
+    document.getElementById("menu").style.display="inline-block";
+    break;
+    case "dataInfo":
+    document.getElementById("dataInfo-page").style.display="block";
+    document.getElementById("menu").style.display="inline-block";
+    renderExamine();
+    break;
+    case "loading":
+    document.getElementById("loading-page").style.display="block";
     break;
     default:
-      document.getElementById("menu").style.display="none";
+    document.getElementById("menu").style.display="none";
     break;
   }
   PAGE=page;

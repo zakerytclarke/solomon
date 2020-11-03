@@ -36,6 +36,14 @@ body{
   margin-left:2vw;
 }
 
+#menu h3{
+  cursor:pointer;
+}
+
+.material-icons{
+  cursor:pointer;
+}
+
 .menuItem{
   width:30%;
   display:inline-block;

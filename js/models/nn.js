@@ -51,13 +51,13 @@ function trainNN(){
 
   document.getElementById("nn-notice-training").style.display="none";
 
-  MODELS.model.feedforwardnetwork=net;
+  MODELS.model.feedforwardnetwork=net.toJSON();
   MODELS.query.feedforwardnetwork=runQueryOnNetwork;
 
 }
 
 function runQueryOnNetwork(input){
-  return decodeData(net.run(encodeData(input).input));
+  return decodeData((net||MODELS.model.feedforwardnetwork).run(encodeData(input).input));
 }
 
 

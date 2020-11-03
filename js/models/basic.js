@@ -100,7 +100,10 @@ function trainBasic(){
 
 function trainNearestNeighbor(d1){
   var data=d1.slice();
-  MODELS.query.NearestNeighbor=function(input){
+  MODELS.query.NearestNeighbor=function(input,data){
+    if(data==null){
+      data=DATA;
+    }
     var minDistance=Infinity;
     var ptr;
     for(var i=0;i<data.length;i++){

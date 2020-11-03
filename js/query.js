@@ -39,6 +39,7 @@ function queryModels(){
       inp[k]=Number(inputs[i].value);
     }
   }
+  console.log("inp",inp);
   var predictions={};
   for(var key in MODELS.query){
     predictions[key]=MODELS.query[key](inp);
