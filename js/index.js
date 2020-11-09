@@ -76,7 +76,7 @@ function CSVTOJSON(){
 function labelData(){
   STRUCTURE={};
   for(var key in DATA[0]){//For all fields
-    STRUCTURE[key]={type:null,numeric:0,categorical:0,empty:0,currency:0,percentage:0,stats:{mean:0,median:[],mode:{},max:-Infinity,min:Infinity},categories:new Set()};
+    STRUCTURE[key]={type:null,numeric:0,categorical:0,empty:0,currency:0,percentage:0,stats:{mean:0,median:[],mode:{},max:-Infinity,min:Infinity,standardDeviation:0,variance:0,covariance:{},correlation:{}},categories:new Set()};
   }
 
 
@@ -108,23 +108,50 @@ function labelData(){
         STRUCTURE[key].stats.max=Math.max(STRUCTURE[key].stats.max,cN);
         STRUCTURE[key].stats.min=Math.min(STRUCTURE[key].stats.min,cN);
 
+
+
       }else{
         STRUCTURE[key].categories.add(x[key]);
       }
     }
   })
 
+  //Standard Deviation & Variance
+  DATA.map(function(x){//For all Data points
+    for(var key in x){//For all fields
+      if(x[key]!=null){
+        x[key]=x[key].trim();
+      }
+      var tDe=typeOfData(x[key]);
+
+      if(tDe!="categorical"&&tDe!="empty"){
+        var cN=convertToNumber(x[key]);
+
+        //Standard Deviation
+        STRUCTURE[key].stats.variance+=Math.pow((cN-STRUCTURE[key].stats.mean),2);
+      }
+    }
+  })
+
+  //Covariance and correlation
+  // for(var i=0;i<DATA.length;i++){
+  //   for(var j=0;j<DATA.length;j++){
+  //   }
+  // }
 
 
-  //Calculate Median and Mean
+
+
+  //Calculate Statistics
   for(var key in STRUCTURE){
     //Categorical
     STRUCTURE[key].categories=Array.from(STRUCTURE[key].categories);
+
     //Mean
     STRUCTURE[key].stats.mean=STRUCTURE[key].stats.mean/DATA.length;
     //Median
     STRUCTURE[key].stats.median=STRUCTURE[key].stats.median[Math.floor(STRUCTURE[key].stats.median.length/2)];
-    //mode
+    //Mode
     var max=0;
     var mode="";
     for(var key1 in STRUCTURE[key].stats.mode){
@@ -140,6 +167,13 @@ function labelData(){
     if(tDe!="categorical"&&tDe!="empty"){
       STRUCTURE[key].stats.mode=convertToNumber(mode);
     }
+
+    //Variance
+    STRUCTURE[key].stats.variance=STRUCTURE[key].stats.variance/DATA.length;
+
+    //StandardDeviation
+    STRUCTURE[key].stats.standardDeviation=Math.sqrt(STRUCTURE[key].stats.variance);
+
   }
 
 }

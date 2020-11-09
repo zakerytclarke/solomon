@@ -1,4 +1,21 @@
 function renderExamine(){
+  document.getElementById("statsInfoTable").innerHTML=`
+    <tr>
+      <th>Feature</th>
+      <th>Mean</th>
+      <th>Median</th>
+      <th>Mode</th>
+      <th>Minimum</th>
+      <th>Maximum</th>
+    </tr>`;
+
+    for(var key in STRUCTURE){
+        if(STRUCTURE[key].usage!="delete"){
+          document.getElementById("statsInfoTable").innerHTML+=`<tr><td>${key}</td><td>${formatValue((STRUCTURE[key].stats.mean||NaN),STRUCTURE[key].type)}</td><td>${formatValue((STRUCTURE[key].stats.median||NaN),STRUCTURE[key].type)}</td><td>${STRUCTURE[key].stats.mode}</td><td>${formatValue((STRUCTURE[key].stats.min||NaN),STRUCTURE[key].type)}</td><td>${formatValue((STRUCTURE[key].stats.max||NaN),STRUCTURE[key].type)}</td></tr>`;
+        }
+    }
+
+
   document.getElementById("dataInfoTable").innerHTML="";
   var temp="<tr><th>Index</th>";
   for(var key in STRUCTURE){
