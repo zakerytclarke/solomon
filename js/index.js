@@ -116,28 +116,9 @@ function labelData(){
     }
   })
 
-  //Standard Deviation & Variance
-  DATA.map(function(x){//For all Data points
-    for(var key in x){//For all fields
-      if(x[key]!=null){
-        x[key]=x[key].trim();
-      }
-      var tDe=typeOfData(x[key]);
 
-      if(tDe!="categorical"&&tDe!="empty"){
-        var cN=convertToNumber(x[key]);
 
-        //Standard Deviation
-        STRUCTURE[key].stats.variance+=Math.pow((cN-STRUCTURE[key].stats.mean),2);
-      }
-    }
-  })
 
-  //Covariance and correlation
-  // for(var i=0;i<DATA.length;i++){
-  //   for(var j=0;j<DATA.length;j++){
-  //   }
-  // }
 
 
 
@@ -168,11 +149,70 @@ function labelData(){
       STRUCTURE[key].stats.mode=convertToNumber(mode);
     }
 
+
+
+  }
+
+  //Standard Deviation & Variance
+  DATA.map(function(x){//For all Data points
+    for(var key in x){//For all fields
+      if(x[key]!=null){
+        x[key]=x[key].trim();
+      }
+      var tDe=typeOfData(x[key]);
+
+      if(tDe!="categorical"&&tDe!="empty"){
+        var cN=convertToNumber(x[key]);
+
+        //Standard Deviation
+        STRUCTURE[key].stats.variance+=Math.pow((cN-STRUCTURE[key].stats.mean),2);
+      }
+    }
+  })
+
+  //Covariance and Correlation
+  for(var k1 in STRUCTURE){
+    for(var k2 in STRUCTURE){
+      //Do once for every combination
+      // if(STRUCTURE[k1].usage=="input"){
+      //   if(STRUCTURE[k2].usage=="output"){
+      for(var i=0;i<DATA.length;i++){
+        if(typeOfData(DATA[i][k1])!="categorical"&&typeOfData(DATA[i][k1])!="empty"){
+          if(typeOfData(DATA[i][k2])!="categorical"&&typeOfData(DATA[i][k2])!="empty"){
+            if(STRUCTURE[k1].stats.covariance[k2]==null){
+              STRUCTURE[k1].stats.covariance[k2]=0;
+            }
+            var c1 = convertToNumber(DATA[i][k1]);
+            var c2 = convertToNumber(DATA[i][k2]);
+
+            STRUCTURE[k1].stats.covariance[k2]+=(c1-STRUCTURE[k1].stats.mean)*(c2-STRUCTURE[k2].stats.mean)
+
+          }
+        }
+      }
+
+
+    }
+  }
+
+
+  //Calculate Supplemental Statistics
+  for(var key in STRUCTURE){
     //Variance
     STRUCTURE[key].stats.variance=STRUCTURE[key].stats.variance/DATA.length;
 
     //StandardDeviation
     STRUCTURE[key].stats.standardDeviation=Math.sqrt(STRUCTURE[key].stats.variance);
+
+    //Covariance
+    for(var k2 in STRUCTURE[key].stats.covariance){
+      STRUCTURE[key].stats.covariance[k2]=STRUCTURE[key].stats.covariance[k2]/DATA.length;
+    }
+
+    //Correlation
+    for(var k2 in STRUCTURE[key].stats.covariance){
+      STRUCTURE[k2].stats.correlation[key]=STRUCTURE[key].stats.covariance[k2]/(STRUCTURE[key].stats.standardDeviation*STRUCTURE[k2].stats.standardDeviation);
+    }
 
   }
 
