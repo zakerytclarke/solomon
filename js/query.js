@@ -84,7 +84,7 @@ function formatValue(value,type){
   if(isNaN(value)){
     return "";
   }
-  
+
   var accuracy=4;
   switch(type){
     case "categorical":
