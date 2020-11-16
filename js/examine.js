@@ -20,7 +20,7 @@ function renderExamine(){
     document.getElementById("correlationTable").innerHTML=``;
     var temp="<tr><th></th>";
     for(var key in STRUCTURE){
-      if(STRUCTURE[key].usage=="output"){
+      if(STRUCTURE[key].usage=="output"&&STRUCTURE[key].type!="categorical"&&STRUCTURE[key].type!="empty"){
         temp+=`<th>${key}</th>`;
       }
     }
@@ -30,16 +30,16 @@ function renderExamine(){
         temp=`<tr><th>${key}</th>`;
 
         for(var k2 in STRUCTURE){
-          var minColor=[255,101,18];
+          var minColor=[255-(255/2),101+53,18+109];
           var maxColor=[0, 154, 237];
 
           var color=[0,0,0];
           color=color.map(function(x,i){
             return minColor[i]+((maxColor[i]-minColor[i])*Math.min(1,STRUCTURE[key].stats.correlation[k2]));
           })
-          console.log(color,STRUCTURE[key].stats.correlation[k2]);
 
-          if(STRUCTURE[k2].usage=="output"){
+
+          if(STRUCTURE[k2].usage=="output"&&STRUCTURE[k2].type!="categorical"&&STRUCTURE[k2].type!="empty"){
             temp+=`<td style="background-color:rgb(${color[0]},${color[1]},${color[2]})">${Math.min(100,100*STRUCTURE[key].stats.correlation[k2].toFixed(2))+"%"}</td>`;
           }
         }

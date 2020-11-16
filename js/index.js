@@ -20,14 +20,11 @@ var OPTIONS={
   }
 };
 
-<<<<<<< HEAD
 String.prototype.replaceAll = function(search, replacement) {
     var target = this;
     return target.replace(new RegExp(search, 'g'), replacement);
 };
 
-=======
->>>>>>> c72ef0bd3e277111fcf4f77ef77abae2d8a4f8f3
 function uploadFile(file){
   console.log(file);
   var fr=new FileReader();
@@ -79,11 +76,7 @@ function CSVTOJSON(){
 function labelData(){
   STRUCTURE={};
   for(var key in DATA[0]){//For all fields
-<<<<<<< HEAD
     STRUCTURE[key]={type:null,numeric:0,categorical:0,empty:0,currency:0,percentage:0,stats:{mean:0,median:[],mode:{},max:-Infinity,min:Infinity,standardDeviation:0,variance:0,covariance:{},correlation:{}},categories:new Set()};
-=======
-    STRUCTURE[key]={type:null,numeric:0,categorical:0,empty:0,currency:0,percentage:0,stats:{mean:0,median:[],mode:{},max:-Infinity,min:Infinity},categories:new Set()};
->>>>>>> c72ef0bd3e277111fcf4f77ef77abae2d8a4f8f3
   }
 
 
@@ -115,11 +108,7 @@ function labelData(){
         STRUCTURE[key].stats.max=Math.max(STRUCTURE[key].stats.max,cN);
         STRUCTURE[key].stats.min=Math.min(STRUCTURE[key].stats.min,cN);
 
-<<<<<<< HEAD
 
-
-=======
->>>>>>> c72ef0bd3e277111fcf4f77ef77abae2d8a4f8f3
       }else{
         STRUCTURE[key].categories.add(x[key]);
       }
@@ -128,7 +117,6 @@ function labelData(){
 
 
 
-<<<<<<< HEAD
 
 
 
@@ -139,21 +127,11 @@ function labelData(){
     //Categorical
     STRUCTURE[key].categories=Array.from(STRUCTURE[key].categories);
 
-=======
-  //Calculate Median and Mean
-  for(var key in STRUCTURE){
-    //Categorical
-    STRUCTURE[key].categories=Array.from(STRUCTURE[key].categories);
->>>>>>> c72ef0bd3e277111fcf4f77ef77abae2d8a4f8f3
     //Mean
     STRUCTURE[key].stats.mean=STRUCTURE[key].stats.mean/DATA.length;
     //Median
     STRUCTURE[key].stats.median=STRUCTURE[key].stats.median[Math.floor(STRUCTURE[key].stats.median.length/2)];
-<<<<<<< HEAD
     //Mode
-=======
-    //mode
->>>>>>> c72ef0bd3e277111fcf4f77ef77abae2d8a4f8f3
     var max=0;
     var mode="";
     for(var key1 in STRUCTURE[key].stats.mode){

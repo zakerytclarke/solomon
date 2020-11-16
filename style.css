@@ -36,7 +36,7 @@ body{
   margin-left:2vw;
 }
 
-<<<<<<< HEAD
+
 #menu h3{
   cursor:pointer;
 }
@@ -45,8 +45,7 @@ body{
   cursor:pointer;
 }
 
-=======
->>>>>>> c72ef0bd3e277111fcf4f77ef77abae2d8a4f8f3
+
 .menuItem{
   width:30%;
   display:inline-block;
