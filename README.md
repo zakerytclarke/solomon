@@ -3,6 +3,8 @@ Data Analysis Tool
 
 ## Try it out at: https://zclarke.dev/solomon
 
+<img src="./assets/solomon-demo.gif" style="width:60%;">
+
 ## Features
 - Automatic data parsing from .csv or .json files
 - Automatic data cleaning and processing
