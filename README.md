@@ -1,5 +1,5 @@
 # solomon
-Data Analysis Tool
+Data Anaysis & Automatically generated Machine Learning Models
 
 ## Try it out at: https://zclarke.dev/solomon
 
