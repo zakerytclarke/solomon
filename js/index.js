@@ -26,7 +26,6 @@ String.prototype.replaceAll = function(search, replacement) {
 };
 
 function uploadFile(file){
-  console.log(file);
   var fr=new FileReader();
   FILENAME=file[0].name.replace(".csv","").replace(".json","").replace(".solomon","");
   if(file[0].name.indexOf(".solomon")!=-1){//SOLOMON
@@ -76,7 +75,7 @@ function CSVTOJSON(){
 function labelData(){
   STRUCTURE={};
   for(var key in DATA[0]){//For all fields
-    STRUCTURE[key]={type:null,numeric:0,categorical:0,empty:0,currency:0,percentage:0,stats:{mean:0,median:[],mode:{},max:-Infinity,min:Infinity,standardDeviation:0,variance:0,covariance:{},correlation:{}},categories:new Set()};
+    STRUCTURE[key]={type:null,numeric:0,categorical:0,empty:0,currency:0,percentage:0,stats:{mean:0,median:[],mode:{},max:-Infinity,min:Infinity,standardDeviation:0,variance:0,covariance:{},correlation_spearman:{},correlation_pearson:{}},categories:new Set()};
   }
 
 
@@ -169,7 +168,7 @@ function labelData(){
     }
   })
 
-  //Covariance and Correlation
+  //Covariance and correlation_pearson
   for(var k1 in STRUCTURE){
     for(var k2 in STRUCTURE){
       //Do once for every combination
@@ -210,11 +209,25 @@ function labelData(){
 
     //Correlation
     for(var k2 in STRUCTURE[key].stats.covariance){
-      STRUCTURE[k2].stats.correlation[key]=STRUCTURE[key].stats.covariance[k2]/(STRUCTURE[key].stats.standardDeviation*STRUCTURE[k2].stats.standardDeviation);
+      STRUCTURE[k2].stats.correlation_pearson[key]=STRUCTURE[key].stats.covariance[k2]/(STRUCTURE[key].stats.standardDeviation*STRUCTURE[k2].stats.standardDeviation);
+      STRUCTURE[k2].stats.correlation_spearman[key]=STRUCTURE[key].stats.covariance[k2]/(STRUCTURE[key].stats.standardDeviation*STRUCTURE[k2].stats.standardDeviation);
+
     }
 
   }
 
+}
+
+
+function convertToRanks(){
+  var ranked=JSON.parse(JSON.stringify(DATA));
+  for(var key in DATA[0]){
+    sortData(key);
+    var count=0;
+    for(var i=0;i<ranked.length;i++){
+
+    }
+  }
 }
 
 
