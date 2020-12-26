@@ -12,7 +12,7 @@ function renderExamine(){
 
     for(var key in STRUCTURE){
         if(STRUCTURE[key].usage!="delete"){
-          document.getElementById("statsInfoTable").innerHTML+=`<tr><td>${key}</td><td>${formatValue((STRUCTURE[key].stats.mean||NaN),STRUCTURE[key].type)}</td><td>${formatValue((STRUCTURE[key].stats.median||NaN),STRUCTURE[key].type)}</td><td>${STRUCTURE[key].stats.mode}</td><td>${formatValue((STRUCTURE[key].stats.min||NaN),STRUCTURE[key].type)}</td><td>${formatValue((STRUCTURE[key].stats.max||NaN),STRUCTURE[key].type)}</td><td>${formatValue((STRUCTURE[key].stats.standardDeviation||NaN),STRUCTURE[key].type)}</td></tr>`;
+          document.getElementById("statsInfoTable").innerHTML+=`<tr><td>${key}</td><td>${formatValue((STRUCTURE[key].stats.mean||NaN),STRUCTURE[key].type)}</td><td>${formatValue((STRUCTURE[key].stats.median||NaN),STRUCTURE[key].type)}</td><td>${formatValue(STRUCTURE[key].stats.mode,STRUCTURE[key].type)}</td><td>${formatValue((STRUCTURE[key].stats.min||NaN),STRUCTURE[key].type)}</td><td>${formatValue((STRUCTURE[key].stats.max||NaN),STRUCTURE[key].type)}</td><td>${formatValue((STRUCTURE[key].stats.standardDeviation||NaN),STRUCTURE[key].type)}</td></tr>`;
         }
     }
 
@@ -35,12 +35,12 @@ function renderExamine(){
 
           var color=[0,0,0];
           color=color.map(function(x,i){
-            return minColor[i]+((maxColor[i]-minColor[i])*Math.min(1,STRUCTURE[key].stats.correlation[k2]));
+            return minColor[i]+((maxColor[i]-minColor[i])*Math.min(1,STRUCTURE[key].stats.correlation_pearson[k2]));
           })
 
 
           if(STRUCTURE[k2].usage=="output"&&STRUCTURE[k2].type!="categorical"&&STRUCTURE[k2].type!="empty"){
-            temp+=`<td style="background-color:rgb(${color[0]},${color[1]},${color[2]})">${Math.min(100,100*STRUCTURE[key].stats.correlation[k2].toFixed(2))+"%"}</td>`;
+            temp+=`<td style="background-color:rgb(${color[0]},${color[1]},${color[2]})">${Math.min(100,100*STRUCTURE[key].stats.correlation_pearson[k2].toFixed(2))+"%"}</td>`;
           }
         }
         temp+="</tr>";

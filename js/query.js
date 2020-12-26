@@ -59,12 +59,13 @@ function queryModels(){
 
   document.getElementById("queryResults").innerHTML=html;
 
+
   //Render Model Values
   for(var key in predictions){
     var html=`<tr><td>${key}</td>`;//Model Name
-    for(var k2 in predictions[key]){
+    for(var k2 in predictions[key]){//Predictions
       var error;
-      console.log(key,k2);
+      console.log(k2,predictions[key][k2],formatValue(predictions[key][k2],STRUCTURE[k2].type));
       if(STRUCTURE[k2].type=="categorical"){
         error=`${(100*MODELS.error[key][k2].accuracy).toFixed(2)}%`
       }else{
@@ -81,10 +82,9 @@ function queryModels(){
 }
 
 function formatValue(value,type){
-  if(isNaN(value)){
+  if(isNaN(value)&&type!="categorical"){
     return "";
   }
-
   var accuracy=4;
   switch(type){
     case "categorical":

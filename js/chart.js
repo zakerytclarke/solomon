@@ -74,7 +74,12 @@ function Graph(){
                 label: 'Scatter Dataset',
                 backgroundColor: bgColors[1],
                 borderColor: borderColors[1],
-                data: data
+                data: data,
+                trendlineLinear: {
+                  style: "rgb(255, 93, 89)",
+                  lineStyle: "dotted",
+                  width: 2
+                }
             }]
         },
         options: {
