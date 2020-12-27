@@ -1,4 +1,4 @@
-# solomon
+# Solomon.ai
 Data Anaysis & Automatically generated Machine Learning Models
 
 ## Try it out at: https://zclarke.dev/solomon
@@ -22,3 +22,4 @@ Data Anaysis & Automatically generated Machine Learning Models
 - Migrate to React
 - Improved framework for adding models and statistics
 - Create optimized networks and built-in hyperparameter optimization
+- Add Command line interface to build functions and analysis from command
