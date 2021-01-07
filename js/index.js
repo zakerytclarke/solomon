@@ -1,4 +1,4 @@
-console.log("v1.1.4");
+console.log("v1.1.5");
 
 var FILENAME;
 var ORIGINAL_DATA;
@@ -459,6 +459,7 @@ function typeOfData(x){
 
 
 function convertToNumber(x){
+  console.log(x);
   if(Number(x)){
     return Number(x.replace(",",""));
   }
