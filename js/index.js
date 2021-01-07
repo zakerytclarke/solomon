@@ -1,3 +1,5 @@
+console.log("v1.1.4");
+
 var FILENAME;
 var ORIGINAL_DATA;
 var DATA;
