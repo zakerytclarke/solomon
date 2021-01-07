@@ -458,13 +458,13 @@ function typeOfData(x){
 
 function convertToNumber(x){
   if(Number(x)){
-    return Number(x);
+    return Number(x.replace(",",""));
   }
   if(x!=null&&x.indexOf("$")!=-1&&Number(x.substring(1))){
-    return Number(x.substring(1));
+    return Number(x.replace(",","").substring(1));
   }
   if(x!=null&&x.indexOf("%")!=-1&&Number(x.replace("%",""))){
-    return Number(x.replace("%",""));
+    return Number(x.replace(",","").replace("%",""));
   }
 }
 
