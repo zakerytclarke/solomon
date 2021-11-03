@@ -27,8 +27,29 @@ String.prototype.replaceAll = function(search, replacement) {
     return target.replace(new RegExp(search, 'g'), replacement);
 };
 
-function uploadFile(file){
-  var fr=new FileReader();
+function uploadFile(file,url){
+  if(url){
+    var request = new XMLHttpRequest();
+    request.open('GET',url , true);
+    request.responseType = 'blob';
+    request.onload = function() {
+    var reader = new FileReader();
+    reader.readAsDataURL(request.response);
+    uploadLoadFile(request.response)
+  };
+  request.send();
+  }else{
+    uploadLoadFile(file)
+  }
+  
+  
+  
+  
+
+}
+
+function uploadLoadFile(file){
+    var fr=new FileReader();
   FILENAME=file[0].name.replace(".csv","").replace(".json","").replace(".solomon","");
   if(file[0].name.indexOf(".solomon")!=-1){//SOLOMON
     fr.onload=function(){
